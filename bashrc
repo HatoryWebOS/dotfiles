@@ -27,9 +27,9 @@ alias gs="git status"
 alias q="exit"
 alias mocp="mocp; mocp -x"
 alias clear_cache="sudo paccache -rk0"
-alias gpfw="python ~/
+alias gpfw="python ~/.bashrc"
 alias inotify_increase="echo fs.inotify.max_user_watches=524288 | sudo tee /etc/sysctl.d/40-max-user-watches.conf && sudo sysctl --system"
-alias clear='print
+alias clear='printf "\033c"'
 alias fixadb="sudo adb kill-server && sudo adb devices"
 alias dmenu_fixed="dmenu_run -fn '-xos4-terminus-medium-r-*-*-14-*' -h 26"
 alias cleanphoto="exiftool -all= $*"
