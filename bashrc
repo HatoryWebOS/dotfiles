@@ -14,7 +14,7 @@
 
 alias ..='cd ..'
 alias ...="cd ../.."
-alias rmdb
+alias rmdb'sudo rm /var/lib/pacman/db.lck'
 alias youtube-dl="youtube-dl -o '%(title)s.%(ext)s'"
 alias mp3='youtube-dl -x --audio-format "mp3" --audio-quality 0 --embed-thumbnail $*'
 alias webserver='python3 -m http.server'
