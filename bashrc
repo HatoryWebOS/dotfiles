@@ -172,6 +172,6 @@ if [ -e ~/scripts/bash_private.sh ]; then
 fi
 
 # added by travis gem
-[ -f /data/data/com.termux/files/usr/bin/travis.sh ] && source /data/data/com.termux/files/usr/bin/travis.sh
-
+[ -f /home/hatory/.travis/travis.sh ] && source home/hatory/.travis/travis.sh
+ 
 eval $(thefuck --alias)
