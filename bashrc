@@ -27,7 +27,7 @@ alias gs="git status"
 alias q="exit"
 alias mocp="mocp; mocp -x"
 alias clear_cache="sudo paccache -rk0"
-alias gpfw="python ~/.bashrc"
+alias gpfw="python ~/GitHub/gopro_fw_dl/gopro-fw-dl.py
 alias inotify_increase="echo fs.inotify.max_user_watches=524288 | sudo tee /etc/sysctl.d/40-max-user-watches.conf && sudo sysctl --system"
 alias clear='printf "\033c"'
 alias fixadb="sudo adb kill-server && sudo adb devices"
@@ -170,8 +170,3 @@ shopt -s autocd
 if [ -e ~/scripts/bash_private.sh ]; then
 	. ~/scripts/bash_private.sh
 fi
-
-# added by travis gem
-[ -f /home/hatory/.travis/travis.sh ] && source home/hatory/.travis/travis.sh
- 
-eval $(thefuck --alias)
