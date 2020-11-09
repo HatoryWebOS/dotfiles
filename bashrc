@@ -1,172 +1,131 @@
-#
-# ~/.bashrc
-#
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
 
 # If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+case $- in
+    *i*) ;;
+      *) return;;
+esac
 
-#####################
-#                   #
-#       ALIAS       #
-#                   #    
-#####################
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
 
+# append to the history file, don't overwrite it
+shopt -s histappend
 
-alias ..='cd ..'
-alias ...="cd ../.."
-alias rmdb'sudo rm /var/lib/pacman/db.lck'
-alias youtube-dl="youtube-dl -o '%(title)s.%(ext)s'"
-alias mp3='youtube-dl -x --audio-format "mp3" --audio-quality 0 --embed-thumbnail $*'
-alias webserver='python3 -m http.server'
-alias cmesg='git diff --name-only'
-alias gstore='git config credential.helper store'
-alias open="gnome-open"
-alias pb="pastebinit -b http://pastebin.com -i "
-alias gitg='git log --graph --oneline --decorate --all'
-alias gs="git status"
-alias q="exit"
-alias mocp="mocp; mocp -x"
-alias clear_cache="sudo paccache -rk0"
-alias gpfw="python ~/GitHub/gopro_fw_dl/gopro-fw-dl.py
-alias inotify_increase="echo fs.inotify.max_user_watches=524288 | sudo tee /etc/sysctl.d/40-max-user-watches.conf && sudo sysctl --system"
-alias clear='printf "\033c"'
-alias fixadb="sudo adb kill-server && sudo adb devices"
-alias dmenu_fixed="dmenu_run -fn '-xos4-terminus-medium-r-*-*-14-*' -h 26"
-alias cleanphoto="exiftool -all= $*"
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
 
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
 
-#####################
-#                   #
-#     SHORTCUTS     #
-#                   #    
-#####################
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
 
-alias d="cd ~/Downloads"
-alias gh="cd ~/GitHub"
-alias h="cd ~"
-alias t="cd ~/Desktop/temp"
+# make less more friendly for non-text input files, see lesspipe(1)
+#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-#####################
-#                   #
-#     FUNCTIONS     #
-#                   #    
-#####################
-
-sprunge() {
-	if [[ $1 ]]; then
-	curl -F 'sprunge=<-' "http://sprunge.us" <"$1"
-	else
-	curl -F 'sprunge=<-' "http://sprunge.us"
-	fi
-}
-
-linx(){
-	curl -T "$@" -H "Linx-Randomize: yes" https://linx.li/upload/  
-}
-
-mdd(){
-	mkdir $1 && cd $1
-}
-
-webm(){
-	ffmpeg -i $i -c:v libvpx -b:v 1M -c:a libvorbis $o
-}
-
-yturlfix(){
-	url=$1;
-	echo $url | sed 's/.be\//be.com\/watch?v=/g'
-}
-
-stfu() {
-	exec "$@" 1>/dev/null 2>/dev/null &
-}
-
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
-
-update_fork() {
-git fetch upstream
-git rebase upstream/master
-git push -f origin master
-}
-
-#####################
-#                   #
-#  NO-OUT COMMANDS  #
-#                   #    
-#####################
-
-alias gedit='stfu gedit'
-alias gimp='stfu gimp'
-alias firefox='stfu firefox'
-
-
-#####################
-#                   #
-#  GLOBAL VARIABLES #
-#                   #    
-#####################
-
-BROWSER=/usr/bin/firefox
-EDITOR=vim
-export GREP_COLOR="1;32"
-export PS1="\[\033[38;5;33m\]\u\[$(tput sgr0)\]\[\033[38;5;45m\]@\[$(tput sgr0)\]\[\033[38;5;27m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;6m\][\[$(tput sgr0)\]\[\033[38;5;15m\]\W\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\$(parse_git_branch)\[\033[38;5;6m\]]:\[$(tput sgr0)\] "
-export PATH=$PATH:~/.npm-global/bin
-
-###############################
-#                             #
-#  SHORTHAND DOCKER COMMANDS  #
-#                             #    
-###############################
-
-alias docker_start="sudo systemctl start docker"
-alias docker_debian="sudo docker run -it debian /bin/bash"
-alias docker_psh="sudo docker run -it microsoft/powershell"
-
-
-#####################
-#                   #
-#      TERMUX       #
-#                   #    
-#####################
-
-var=$0
-if [ $var = "/data/data/com.termux/files/usr/bin/bash" ]
-	then
-		date
-
-		alias t="tmux"
-		alias l="ls"
-		alias c="cat"
-		alias r="ranger"
-		alias py="python"
-		alias tree='tree -C'
-		alias ls='ls -sh1 --color=auto'
-	else
-		alias ls='ls -sh1 --color=auto'
-		alias grep='grep --color=auto'
-		alias diff='diff --color=auto'
-		alias dmesg='dmesg --color=auto'
-		alias tree='tree -C'
-		alias dir='dir --color=auto'
-		alias egrep='egrep --color=auto'
-		alias fgrep='fgrep --color=auto'
-		alias ip='ip -c'
-		alias pcregrep='pcregrep --color=auto'
-		alias vdir='vdir --color=auto'
-		alias watch='watch --color'
-		alias cower='cower --color=auto'
-		alias pacman='pacman --color auto'
-		alias pactree='pactree --color'
-		alias mc="mc -b"
-		alias mocp='mocp -T blackwhite'
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-### MISC ###
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
 
-shopt -s autocd
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
 
-if [ -e ~/scripts/bash_private.sh ]; then
-	. ~/scripts/bash_private.sh
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    prompt_color='\[\033[;32m\]'
+    info_color='\[\033[1;34m\]'
+    prompt_symbol=㉿
+    if [ "$EUID" -eq 0 ]; then # Change prompt colors for root user
+        prompt_color='\[\033[;94m\]'
+        info_color='\[\033[1;31m\]'
+        prompt_symbol=💀
+    fi
+    PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'\$\[\033[0m\] '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls, less and man, and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias diff='diff --color=auto'
+    alias ip='ip --color=auto'
+
+    export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+    export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+    export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+    export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
+    export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+    export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+    export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
 fi
